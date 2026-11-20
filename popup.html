@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 370px;
+      margin: 0;
+      padding: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #818cf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      font-weight: 600;
+    }
+    .preview-card {
+      background: #131b2e;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .field-label {
+      font-size: 10px;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .title-input {
+      width: 100%;
+      background: #090d16;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 8px;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
+    .price-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .price-box {
+      background: #090d16;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+    .price-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: #34d399;
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+    .markup-row {
+      background: #1e293b;
+      border: 1px dashed #4338ca;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+    }
+    .markup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+    .markup-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .markup-btn {
+      background: #090d16;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 5px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .markup-btn.active, .markup-btn:hover {
+      background: #4f46e5;
+      color: white;
+      border-color: #6366f1;
+    }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    button.btn-primary {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    button.btn-primary:hover { background: #4338ca; }
+    button.btn-secondary {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    button.btn-secondary:hover { background: #059669; }
+    button.btn-all {
+      width: 100%;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      border: none;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    button.btn-dashboard {
+      width: 100%;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    button.btn-dashboard:hover {
+      background: #334155;
+      color: white;
+    }
+    .platform-select {
+      width: 100%;
+      background: #131b2e;
+      border: 1px solid #334155;
+      color: white;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      margin-bottom: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .status {
+      font-size: 11px;
+      color: #34d399;
+      text-align: center;
+      min-height: 16px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">⚡ SyncFlow Cross-Lister</div>
+    <span id="detectedPlatformBadge" class="badge">Scanning...</span>
+  </div>
+
+  <!-- Editable Preview Card -->
+  <div class="preview-card">
+    <span class="field-label">Product Title (Editable):</span>
+    <input type="text" id="productTitleInput" class="title-input" placeholder="Product Title..." />
+    <div class="price-row">
+      <div class="price-box">
+        <span class="field-label">Base Price (listing currency)</span>
+        <input type="number" step="0.01" id="basePriceInput" class="price-val" min="0" placeholder="Unknown" />
+      </div>
+      <div class="price-box">
+        <span class="field-label">Final Selling Price (listing currency)</span>
+        <input type="number" step="0.01" id="finalPriceInput" class="price-val" min="0" placeholder="Unknown" style="color: #60a5fa;" />
+      </div>
+    </div>
+  </div>
+
+  <label>Brand <input id="brandInput" class="title-input" placeholder="Enter verified brand" /></label>
+  <!-- CSP-Safe Percentage Markup Controller (Uses data-pct instead of inline onclick!) -->
+  <div class="markup-row">
+    <div class="markup-header">
+      <span>Price markup:</span>
+      <span id="markupDisplayLabel" style="color:#818cf8;">+0%</span>
+    </div>
+    <div class="markup-buttons">
+      <button type="button" class="markup-btn active" data-pct="0">+0%</button>
+      <button type="button" class="markup-btn" data-pct="10">+10%</button>
+      <button type="button" class="markup-btn" data-pct="20">+20%</button>
+      <button type="button" class="markup-btn" data-pct="30">+30%</button>
+      <button type="button" class="markup-btn" data-pct="50">+50%</button>
+    </div>
+  </div>
+
+  <!-- Select Target Platform -->
+  <select id="targetPlatform" class="platform-select">
+    <option value="ebay">Target: eBay (ebay.com / ebay.es)</option>
+    <option value="vinted">Target: Vinted (vinted.fr / vinted.es)</option>
+    <option value="etsy">Target: Etsy (Handmade / Vintage)</option>
+    <option value="depop">Target: Depop (Streetwear / Y2K)</option>
+    <option value="wallapop">Target: Wallapop (Spain)</option>
+    <option value="amazon">Target: Amazon Seller Central</option>
+  </select>
+
+  <!-- Row 1: Save to DB & Open target draft -->
+  <div class="actions-grid">
+    <button type="button" id="saveToDbBtn" class="btn-secondary">
+      <span>💾</span><span>Save to DB</span>
+    </button>
+    <button type="button" id="scrapeAndPostBtn" class="btn-primary">
+      <span>🚀</span><span>Open target draft</span>
+    </button>
+  </div>
+
+  <!-- Row 2: Post to ALL Platforms -->
+  <button type="button" id="postToAllBtn" class="btn-all">
+    <span>🌐</span><span>Open eBay, Vinted &amp; Etsy drafts</span>
+  </button>
+
+  <!-- Row 3: Open Built-in Database Manager -->
+  <button type="button" id="openDashboardBtn" class="btn-dashboard">
+    <span>🗂️</span><span>Open Saved Products DB Manager (<span id="dbCountSpan">0</span>)</span>
+  </button>
+
+  <div id="statusText" class="status">Ready</div>
+
+  <script src="review.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

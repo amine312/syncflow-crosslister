@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SyncFlow — Built-in Product Database & Bulk Cross-Lister</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 22px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #4f46e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .brand p {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      background: #131b2e;
+      border: 1px solid #1e293b;
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+    .toolbar span {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+    .pct-btn {
+      background: #090d16;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .pct-btn:hover {
+      background: #4f46e5;
+      color: white;
+      border-color: #6366f1;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #131b2e;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .thumb {
+      width: 68px;
+      height: 68px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #090d16;
+      border: 1px solid #334155;
+      flex-shrink: 0;
+    }
+    .sku-tag {
+      font-size: 11px;
+      color: #818cf8;
+      font-family: monospace;
+      font-weight: 700;
+    }
+    label {
+      font-size: 11px;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 3px;
+    }
+    input, textarea, select {
+      width: 100%;
+      background: #090d16;
+      border: 1px solid #334155;
+      color: white;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .btn {
+      border: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+    }
+    .btn-save { background: #10b981; }
+    .btn-post { background: #4f46e5; }
+    .btn-all { background: #d97706; }
+    .btn-del { background: #e11d48; margin-top: 4px; width: 100%; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #10b981;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      display: none;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">SF</div>
+        <div>
+          <h1>SyncFlow Product Database Manager</h1>
+          <p>Edit scraped titles, apply % price markups, and cross-post to eBay, Vinted, Etsy, Depop & Wallapop</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <span>Apply Bulk Price Markup (%) to ALL Saved Products:</span>
+      <button type="button" class="pct-btn" data-bulk-pct="0">Reset (Base Price)</button>
+      <button type="button" class="pct-btn" data-bulk-pct="10">+10%</button>
+      <button type="button" class="pct-btn" data-bulk-pct="15">+15%</button>
+      <button type="button" class="pct-btn" data-bulk-pct="20">+20%</button>
+      <button type="button" class="pct-btn" data-bulk-pct="30">+30%</button>
+      <button type="button" class="pct-btn" data-bulk-pct="50">+50%</button>
+    </div>
+
+    <div id="catalogGrid" class="grid"></div>
+  </div>
+
+  <div id="toastBox" class="toast">Saved!</div>
+  <script src="review.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
