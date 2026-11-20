@@ -55,8 +55,8 @@ function renderCatalog() {
         <div class="card-top">
           ${imgUrl ? `<img src="${escapeMarkup(imgUrl)}" class="thumb" />` : `<div class="thumb"></div>`}
           <div>
-            <div class="sku-tag">${escapeMarkup(p.sku || "ITEM")} • ${Array.isArray(p.images) ? p.images.length : 0} HD Photos • ${specsCount} Specs</div>
-            <div style="font-size:11px;color:#34d399;margin-top:2px;">Scrapling Engine • Qty: 1 per variant</div>
+            <div class="sku-tag">${escapeMarkup(p.sku || "ITEM")} • ${Array.isArray(p.images) ? p.images.length : 0} photo${p.images?.length === 1 ? "" : "s"} • ${specsCount} attributes</div>
+            <div style="font-size:11px;color:#34d399;margin-top:2px;">Catalog item • Qty: 1 per variant</div>
           </div>
         </div>
 
@@ -78,11 +78,11 @@ function renderCatalog() {
 
         <div class="row-2">
           <div>
-            <label>Brand / Marca</label>
+            <label>Brand</label>
             <input type="text" class="inp-brand" data-idx="${idx}" value="${escapeMarkup(p.brand)}" />
           </div>
           <div>
-            <label>Target Platform</label>
+            <label>Destination</label>
             <select class="inp-target" data-idx="${idx}">
               <option value="ebay">eBay</option>
               <option value="vinted">Vinted</option>
@@ -94,22 +94,22 @@ function renderCatalog() {
         </div>
 
         <div>
-          <label>Extracted Item Specifics (${specsCount} attributes — Brand, Model, Type, Connectivity, MPN...)</label>
-          <textarea rows="4" class="inp-specs" data-idx="${idx}" style="font-family:monospace;font-size:11px;color:#a5b4fc;">${escapeMarkup(specsFormatted)}</textarea>
+          <label>Product attributes (${specsCount})</label>
+          <textarea rows="3" class="inp-specs" data-idx="${idx}" style="font-family:monospace;font-size:11px;color:#a5b4fc;">${escapeMarkup(specsFormatted)}</textarea>
         </div>
 
         <div>
-          <label>Full Extracted Description (Iframe + Specs)</label>
-          <textarea rows="5" class="inp-desc" data-idx="${idx}">${escapeMarkup(p.description)}</textarea>
+          <label>Description</label>
+          <textarea rows="3" class="inp-desc" data-idx="${idx}">${escapeMarkup(p.description)}</textarea>
         </div>
 
-        <p class="review-status" aria-live="polite">${Review.message(p)}</p>
+        <p class="review-status" data-ready="${Review.missing(p).length === 0}" aria-live="polite">${Review.message(p)}</p>
         <div class="btn-row">
-          <button type="button" class="btn btn-save" data-action="save" data-idx="${idx}">💾 Save</button>
-          <button type="button" class="btn btn-post" data-action="post" data-idx="${idx}">🚀 Post Target</button>
-          <button type="button" class="btn btn-all" data-action="post-all" data-idx="${idx}">🌐 Open 3 drafts</button>
+          <button type="button" class="btn btn-save" data-action="save" data-idx="${idx}">Save changes</button>
+          <button type="button" class="btn btn-post" data-action="post" data-idx="${idx}">Open draft</button>
+          <button type="button" class="btn btn-all" data-action="post-all" data-idx="${idx}">Open 3 drafts</button>
         </div>
-        <button type="button" class="btn btn-del" data-action="delete" data-idx="${idx}">✕ Remove from DB</button>
+        <button type="button" class="btn btn-del" data-action="delete" data-idx="${idx}">Remove from catalog</button>
       </div>
     `;
   }).join("");
@@ -121,7 +121,9 @@ function renderCatalog() {
         price: card.querySelector(".inp-price").value,
         brand: card.querySelector(".inp-brand").value
       };
-      card.querySelector(".review-status").textContent = Review.message(product);
+      const status = card.querySelector(".review-status");
+      status.textContent = Review.message(product);
+      status.dataset.ready = String(Review.missing(product).length === 0);
     });
   });
   grid.querySelectorAll("button[data-action]").forEach((btn) => {
